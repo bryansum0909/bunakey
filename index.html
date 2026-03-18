@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BunaKey — Gantungan Kunci Daur Ulang Bunaken</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean-deep: #0a1628;
+    --ocean-mid: #0d3b6e;
+    --ocean-teal: #0e7490;
+    --reef-aqua: #06b6d4;
+    --coral: #f97316;
+    --sand: #fef3c7;
+    --foam: #e0f7fa;
+    --eco-green: #22c55e;
+    --text-light: #e2f4f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ocean-deep);
+    color: var(--text-light);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 60%, #0d3b6e 0%, #0a1628 70%);
+  }
+
+  /* Animated bubbles */
+  .bubbles { position: absolute; inset: 0; pointer-events: none; }
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.15);
+    animation: rise linear infinite;
+  }
+  .bubble:nth-child(1)  { width:18px;height:18px; left:10%; animation-duration:9s; animation-delay:0s; }
+  .bubble:nth-child(2)  { width:10px;height:10px; left:20%; animation-duration:13s; animation-delay:2s; }
+  .bubble:nth-child(3)  { width:25px;height:25px; left:35%; animation-duration:11s; animation-delay:1s; }
+  .bubble:nth-child(4)  { width:8px; height:8px;  left:55%; animation-duration:8s;  animation-delay:3s; }
+  .bubble:nth-child(5)  { width:15px;height:15px; left:70%; animation-duration:14s; animation-delay:0.5s; }
+  .bubble:nth-child(6)  { width:20px;height:20px; left:80%; animation-duration:10s; animation-delay:4s; }
+  .bubble:nth-child(7)  { width:12px;height:12px; left:90%; animation-duration:12s; animation-delay:1.5s; }
+  @keyframes rise {
+    0%   { bottom: -40px; opacity: 0; transform: translateX(0); }
+    20%  { opacity: 1; }
+    80%  { opacity: 0.7; }
+    100% { bottom: 110%; opacity: 0; transform: translateX(30px); }
+  }
+
+  /* Fish swim */
+  .fish-swim {
+    position: absolute;
+    font-size: 1.8rem;
+    animation: swimAcross 18s linear infinite;
+    opacity: 0.25;
+  }
+  .fish-swim:nth-child(1) { top: 20%; animation-delay: 0s; }
+  .fish-swim:nth-child(2) { top: 50%; animation-delay: 6s; font-size: 1.2rem; }
+  .fish-swim:nth-child(3) { top: 75%; animation-delay: 12s; font-size: 2.2rem; }
+  @keyframes swimAcross {
+    from { left: -80px; }
+    to   { left: 110%; }
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 780px; }
+
+  .eco-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(34,197,94,0.15);
+    border: 1px solid rgba(34,197,94,0.4);
+    color: var(--eco-green);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #ffffff 30%, var(--reef-aqua) 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--coral) 20%, #fbbf24 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+    color: rgba(224,247,250,0.7);
+    max-width: 520px;
+    margin: 1rem auto 2.5rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, var(--coral), #f59e0b);
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 16px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(249,115,22,0.4);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(249,115,22,0.6); }
+
+  .hero-note {
+    margin-top: 1.2rem;
+    font-size: 0.8rem;
+    color: rgba(224,247,250,0.45);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* WAVE */
+  .wave-divider { display: block; width: 100%; margin-bottom: -2px; }
+
+  /* PROGRESS BAR */
+  .progress-section {
+    background: #0d1f3c;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .progress-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--reef-aqua);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .progress-numbers {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.8rem;
+  }
+  .progress-numbers span { color: var(--coral); }
+  .bar-wrap {
+    max-width: 500px; margin: 0 auto;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px; height: 14px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--eco-green), var(--reef-aqua));
+    border-radius: 999px;
+    transition: width 2s ease;
+    box-shadow: 0 0 10px rgba(6,182,212,0.5);
+  }
+
+  /* COUNTDOWN */
+  .countdown-section {
+    background: linear-gradient(180deg, #0d1f3c, #0a1628);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .countdown-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--reef-aqua);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .countdown-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .cbox {
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.2);
+    border-radius: 12px;
+    padding: 1.2rem 1.6rem;
+    min-width: 90px;
+  }
+  .cbox-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+  .cbox-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(224,247,250,0.5);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* PRODUCT SECTION */
+  .products-section {
+    padding: 5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--reef-aqua);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+  .section-desc {
+    color: rgba(224,247,250,0.6);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  .product-card {
+    background: rgba(13,59,110,0.4);
+    border: 1px solid rgba(6,182,212,0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(6,182,212,0.5);
+  }
+  .product-emoji {
+    font-size: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 140px;
+    background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(13,59,110,0.2));
+    position: relative;
+    overflow: hidden;
+  }
+  .product-emoji::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(6,182,212,0.05), transparent 70%);
+  }
+  .eco-tag {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: rgba(34,197,94,0.2);
+    border: 1px solid rgba(34,197,94,0.4);
+    color: var(--eco-green);
+    font-size: 0.6rem;
+    font-family: 'Space Mono', monospace;
+    padding: 3px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.08em;
+  }
+  .product-info { padding: 1.2rem; }
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+  .product-desc {
+    font-size: 0.8rem;
+    color: rgba(224,247,250,0.55);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  .product-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .price-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--coral);
+  }
+  .buy-btn {
+    background: linear-gradient(135deg, var(--ocean-teal), var(--reef-aqua));
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-family: 'Space Mono', monospace;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .buy-btn:hover { opacity: 0.85; transform: scale(1.05); }
+
+  /* HOW IT WORKS */
+  .how-section {
+    background: #0d1f3c;
+    padding: 5rem 2rem;
+  }
+  .how-inner { max-width: 900px; margin: 0 auto; }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .step {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: 16px;
+    background: rgba(6,182,212,0.05);
+    border: 1px solid rgba(6,182,212,0.1);
+    transition: border-color 0.3s;
+    animation: fadeUp 0.6s ease both;
+  }
+  .step:nth-child(1) { animation-delay: 0.1s; }
+  .step:nth-child(2) { animation-delay: 0.2s; }
+  .step:nth-child(3) { animation-delay: 0.3s; }
+  .step:nth-child(4) { animation-delay: 0.4s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .step:hover { border-color: rgba(6,182,212,0.35); }
+  .step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--reef-aqua);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .step-icon { font-size: 2.2rem; margin-bottom: 0.6rem; }
+  .step-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.4rem;
+  }
+  .step-text {
+    font-size: 0.8rem;
+    color: rgba(224,247,250,0.5);
+    line-height: 1.6;
+  }
+
+  /* PRIZE SECTION */
+  .prize-section {
+    padding: 5rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .prize-card {
+    background: linear-gradient(135deg, rgba(13,59,110,0.6), rgba(14,116,144,0.3));
+    border: 1px solid rgba(6,182,212,0.3);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .prize-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(6,182,212,0.04) 60deg, transparent 120deg);
+    animation: spin 20s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .prize-icon { font-size: 5rem; margin-bottom: 1rem; position: relative; z-index: 1; }
+  .prize-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    position: relative; z-index: 1;
+  }
+  .prize-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem;
+    color: var(--coral);
+    margin-bottom: 1rem;
+    position: relative; z-index: 1;
+  }
+  .prize-desc {
+    font-size: 0.85rem;
+    color: rgba(224,247,250,0.6);
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+
+  /* ECO IMPACT */
+  .eco-section {
+    background: rgba(34,197,94,0.04);
+    border-top: 1px solid rgba(34,197,94,0.15);
+    border-bottom: 1px solid rgba(34,197,94,0.15);
+    padding: 4rem 2rem;
+  }
+  .eco-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; text-align: center; }
+  @media(max-width:600px) { .eco-inner { grid-template-columns: 1fr; } }
+  .eco-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--eco-green);
+  }
+  .eco-stat-label {
+    font-size: 0.82rem;
+    color: rgba(224,247,250,0.55);
+    margin-top: 0.3rem;
+    line-height: 1.5;
+  }
+
+  /* TESTIMONIALS */
+  .testi-section {
+    padding: 5rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .testi-card {
+    background: rgba(13,59,110,0.3);
+    border: 1px solid rgba(6,182,212,0.12);
+    border-radius: 14px;
+    padding: 1.5rem;
+  }
+  .testi-stars { color: #fbbf24; font-size: 0.9rem; margin-bottom: 0.6rem; }
+  .testi-text { font-size: 0.85rem; color: rgba(224,247,250,0.7); line-height: 1.6; margin-bottom: 1rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 10px; }
+  .testi-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--ocean-teal), var(--reef-aqua)); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .testi-name { font-size: 0.82rem; font-weight: 500; color: #fff; }
+  .testi-city { font-size: 0.72rem; color: rgba(224,247,250,0.4); }
+
+  /* FOOTER */
+  footer {
+    background: #060e1a;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(6,182,212,0.1);
+  }
+  footer .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--reef-aqua);
+    margin-bottom: 0.5rem;
+  }
+  footer p {
+    font-size: 0.78rem;
+    color: rgba(224,247,250,0.35);
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto 0.5rem;
+  }
+  .legal-note {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.2);
+    border-radius: 8px;
+    max-width: 600px;
+    margin-left: auto; margin-right: auto;
+    font-size: 0.72rem;
+    color: rgba(249,115,22,0.8);
+    line-height: 1.6;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(6,14,26,0.85);
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: linear-gradient(135deg, #0d1f3c, #0a1628);
+    border: 1px solid rgba(6,182,212,0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; color: rgba(224,247,250,0.5);
+    font-size: 1.4rem; cursor: pointer;
+  }
+  .modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .modal p { font-size: 0.85rem; color: rgba(224,247,250,0.6); margin-bottom: 1.5rem; line-height: 1.6; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; font-size: 0.75rem; font-family: 'Space Mono', monospace; color: var(--reef-aqua); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .form-group input, .form-group select {
+    width: 100%;
+    background: rgba(6,182,212,0.07);
+    border: 1px solid rgba(6,182,212,0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--reef-aqua); }
+  .form-group select option { background: #0d1f3c; }
+  .modal-product-info {
+    background: rgba(6,182,212,0.06);
+    border: 1px solid rgba(6,182,212,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .modal-product-info .prod-emo { font-size: 2rem; }
+  .modal-product-info .prod-detail { flex: 1; }
+  .modal-product-info .prod-name { font-size: 0.9rem; font-weight: 500; color: #fff; }
+  .modal-product-info .prod-price { font-family: 'Space Mono', monospace; font-size: 1rem; color: var(--coral); margin-top: 2px; }
+  .ticket-info {
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.82rem;
+    color: var(--eco-green);
+    line-height: 1.5;
+  }
+  .modal-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--coral), #f59e0b);
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .modal-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="bubbles">
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+  <div class="fish-swim">🐠</div>
+  <div class="fish-swim">🐟</div>
+  <div class="fish-swim">🦈</div>
+
+  <div class="hero-content">
+    <div class="eco-badge">♻️ 100% Daur Ulang Plastik Laut</div>
+    <h1>Buna<span>Key</span></h1>
+    <p class="hero-sub">
+      Gantungan kunci eksklusif berbahan daur ulang plastik laut Bunaken.
+      Beli 1 produk = 1 kupon undian <strong style="color:#fff">iPhone 17 Pro</strong> senilai Rp 23 juta!
+    </p>
+    <a href="#produk" class="hero-cta">🛒 Beli Sekarang &amp; Ikut Undian</a>
+    <p class="hero-note">Harga mulai Rp 100.000 • Setiap pembelian otomatis dapat nomor undian</p>
+  </div>
+</section>
+
+<!-- WAVE -->
+<svg class="wave-divider" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#0d1f3c"/>
+</svg>
+
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-label">🎯 Progress Kupon Terkumpul</div>
+  <div class="progress-numbers"><span id="sold">0</span> / 460 kupon</div>
+  <div class="bar-wrap">
+    <div class="bar-fill" id="barFill"></div>
+  </div>
+  <p style="font-size:0.78rem;color:rgba(224,247,250,0.4);margin-top:0.8rem;font-family:'Space Mono',monospace">
+    Undian dilaksanakan setelah 460 kupon terjual
+  </p>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="countdown-section">
+  <div class="countdown-title">⏳ Sisa Waktu Pendaftaran</div>
+  <div class="countdown-boxes">
+    <div class="cbox"><div class="cbox-num" id="days">00</div><div class="cbox-label">Hari</div></div>
+    <div class="cbox"><div class="cbox-num" id="hours">00</div><div class="cbox-label">Jam</div></div>
+    <div class="cbox"><div class="cbox-num" id="mins">00</div><div class="cbox-label">Menit</div></div>
+    <div class="cbox"><div class="cbox-num" id="secs">00</div><div class="cbox-label">Detik</div></div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="produk">
+  <div class="section-tag">🐠 Koleksi Produk</div>
+  <h2 class="section-title">Pilih Gantungan Kunci<br>Favoritmu</h2>
+  <p class="section-desc">Setiap produk terbuat dari plastik daur ulang yang dipungut dari perairan Bunaken. Unik, artistik, dan punya makna.</p>
+
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="section-tag">📋 Cara Ikut</div>
+    <h2 class="section-title">Semudah 4 Langkah</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">🛒</div>
+        <div class="step-name">Pilih Produk</div>
+        <div class="step-text">Pilih gantungan kunci favoritmu, mulai dari Rp 100.000</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">💳</div>
+        <div class="step-name">Bayar</div>
+        <div class="step-text">Bayar via QRIS, transfer bank, atau e-wallet (GoPay, OVO, dll)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">🎟️</div>
+        <div class="step-name">Dapat Nomor Kupon</div>
+        <div class="step-text">Otomatis dapat nomor kupon undian unik via WhatsApp & email</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-icon">🎉</div>
+        <div class="step-name">Live Draw</div>
+        <div class="step-text">Saksikan undian LIVE di TikTok & YouTube saat 460 kupon terjual</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIZE -->
+<section class="prize-section">
+  <div class="section-tag">🏆 Hadiah Utama</div>
+  <h2 class="section-title">Menangkan Ini!</h2>
+  <div class="prize-card">
+    <div class="prize-icon">📱</div>
+    <div class="prize-name">iPhone 17 Pro 256GB</div>
+    <div class="prize-value">Senilai Rp 23.049.000</div>
+    <div class="prize-desc">
+      Hadiah langsung dikirim ke pemenang. Undian disaksikan secara LIVE dan hasilnya transparan.
+      Satu tiket bisa menang! 🍀
+    </div>
+  </div>
+</section>
+
+<!-- ECO IMPACT -->
+<section class="eco-section">
+  <div class="eco-inner">
+    <div>
+      <div class="eco-stat-num">460+</div>
+      <div class="eco-stat-label">Botol plastik<br>terangkat dari laut Bunaken</div>
+    </div>
+    <div>
+      <div class="eco-stat-num">100%</div>
+      <div class="eco-stat-label">Material dari<br>sampah plastik daur ulang</div>
+    </div>
+    <div>
+      <div class="eco-stat-num">🌊</div>
+      <div class="eco-stat-label">Setiap pembelian<br>mendukung kebersihan laut</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="section-tag">💬 Kata Mereka</div>
+  <h2 class="section-title">Pembeli Sebelumnya</h2>
+  <div class="testi-grid" id="testiGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">BunaKey 🐠</div>
+  <p>Gantungan kunci eksklusif dari daur ulang plastik Bunaken. Beli produk, jaga laut, menangkan hadiah.</p>
+  <p>IG: @bunakey.id • WA: 0811-430-xxxx • bunaken, Manado, Sulawesi Utara</p>
+  <div class="legal-note">
+    ⚖️ <strong>Keterangan Legal:</strong> Program undian ini adalah <em>program loyalitas pembelian produk</em>.
+    Setiap pembelian produk merchandise daur ulang mendapatkan satu nomor kupon secara otomatis.
+    Tidak ada biaya tambahan untuk mengikuti undian. Penyelenggara bertanggung jawab penuh atas transparansi proses undian.
+  </div>
+  <p style="margin-top:1rem;font-size:0.7rem;opacity:0.3">© 2025 BunaKey. Setiap pembelian = satu langkah lebih baik untuk laut kita.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2>🛒 Beli & Ikut Undian</h2>
+    <p>Isi data di bawah. Nomor kupon undian akan dikirim ke WhatsApp kamu setelah pembayaran dikonfirmasi.</p>
+
+    <div class="modal-product-info" id="modalProductInfo"></div>
+
+    <div class="ticket-info">
+      🎟️ Setiap pembelian 1 produk = 1 nomor kupon undian otomatis<br>
+      📦 Produk dikirim ke seluruh Indonesia via J&T / JNE
+    </div>
+
+    <div class="form-group">
+      <label>Nama Lengkap</label>
+      <input type="text" placeholder="cth: Budi Santoso">
+    </div>
+    <div class="form-group">
+      <label>Nomor WhatsApp</label>
+      <input type="tel" placeholder="cth: 08123456789">
+    </div>
+    <div class="form-group">
+      <label>Kota / Provinsi</label>
+      <input type="text" placeholder="cth: Manado, Sulawesi Utara">
+    </div>
+    <div class="form-group">
+      <label>Jumlah Pembelian</label>
+      <select id="qtySelect" onchange="updateModalTotal()">
+        <option value="1">1 pcs — 1 kupon</option>
+        <option value="2">2 pcs — 2 kupon (hemat lebih)</option>
+        <option value="3">3 pcs — 3 kupon (paling untung!)</option>
+      </select>
+    </div>
+
+    <div class="modal-product-info" style="justify-content:space-between;align-items:center">
+      <span style="font-size:0.82rem;color:rgba(224,247,250,0.6)">Total Pembayaran</span>
+      <span style="font-family:'Space Mono',monospace;font-size:1.2rem;color:var(--coral)" id="modalTotal">Rp 100.000</span>
+    </div>
+
+    <button class="modal-btn" onclick="confirmOrder()">✅ Konfirmasi & Bayar via WhatsApp</button>
+  </div>
+</div>
+
+<script>
+  // Products data
+  const products = [
+    { id:1, emoji:'🐠', name:'Ikan Nemo Bunaken', desc:'Desain ikan badut ikonik Bunaken, terbuat dari botol plastik daur ulang berwarna cerah.', price:100000, tag:'Bestseller' },
+    { id:2, emoji:'🐢', name:'Penyu Hijau', desc:'Simbol kelestarian laut, dibuat dari plastik HDPE yang dipungut dari perairan Bunaken.', price:100000, tag:'Eco-fav' },
+    { id:3, emoji:'🦑', name:'Gurita Bunaken', desc:'Desain gurita unik terinspirasi dari biota laut Bunaken. Setiap detail dibuat tangan.', price:120000, tag:'Limited' },
+    { id:4, emoji:'🪸', name:'Terumbu Karang', desc:'Bentuk terumbu karang berwarna-warni dari plastik daur ulang multi-layer.', price:100000, tag:'Eco' },
+    { id:5, emoji:'🐡', name:'Ikan Badut Berduri', desc:'Si cantik ikan berduri khas perairan Sulawesi Utara dalam bentuk gantungan kunci.', price:100000, tag:'Eco' },
+    { id:6, emoji:'🏝️', name:'Pulau Bunaken', desc:'Siluet pulau Bunaken dengan pantai dan pohon kelapa. Kenangan wisata terbaik.', price:115000, tag:'Wisata' },
+    { id:7, emoji:'🦈', name:'Hiu Karang', desc:'Hiu karang abu-abu, predator cantik perairan Bunaken dalam ukuran mini.', price:120000, tag:'Rare' },
+    { id:8, emoji:'🐙', name:'Bintang Laut', desc:'Bintang laut 5 lengan berwarna merah dari plastik daur ulang lembut.', price:100000, tag:'Eco' },
+  ];
+
+  let selectedProduct = null;
+
+  // Render products
+  const grid = document.getElementById('productGrid');
+  products.forEach(p => {
+    grid.innerHTML += `
+      <div class="product-card" onclick="openModal(${p.id})">
+        <div class="product-emoji">
+          ${p.emoji}
+          <span class="eco-tag">♻️ ${p.tag}</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-desc">${p.desc}</div>
+          <div class="product-price">
+            <span class="price-tag">Rp ${p.price.toLocaleString('id')}</span>
+            <button class="buy-btn">Beli + Kupon</button>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // Testimonials
+  const testimonials = [
+    { emoji:'🧑', name:'Rizal M.', city:'Manado', stars:5, text:'Gantungan kuncinya bagus banget! Desain penyu-nya detail. Langsung dapat nomor kupon juga, sukses buat programnya!' },
+    { emoji:'👩', name:'Sari W.', city:'Jakarta', stars:5, text:'Udah order 3 buah buat oleh-oleh. Produknya unik karena bahan daur ulang, dan bonus ikut undian iPhone! Semoga menang hehe' },
+    { emoji:'🧑', name:'Kevin A.', city:'Surabaya', stars:5, text:'Konsep yang keren banget. Sambil jaga lingkungan, bisa menangkan HP mahal. Recommended!' },
+  ];
+  const tGrid = document.getElementById('testiGrid');
+  testimonials.forEach(t => {
+    tGrid.innerHTML += `
+      <div class="testi-card">
+        <div class="testi-stars">${'⭐'.repeat(t.stars)}</div>
+        <div class="testi-text">"${t.text}"</div>
+        <div class="testi-author">
+          <div class="testi-avatar">${t.emoji}</div>
+          <div><div class="testi-name">${t.name}</div><div class="testi-city">${t.city}</div></div>
+        </div>
+      </div>`;
+  });
+
+  // Progress bar animation
+  const targetSold = 187;
+  setTimeout(() => {
+    let count = 0;
+    const interval = setInterval(() => {
+      count += 3;
+      if(count >= targetSold) { count = targetSold; clearInterval(interval); }
+      document.getElementById('sold').textContent = count;
+      document.getElementById('barFill').style.width = (count/460*100) + '%';
+    }, 20);
+  }, 500);
+
+  // Countdown
+  const endDate = new Date(Date.now() + 28*24*60*60*1000);
+  function updateCountdown() {
+    const diff = endDate - Date.now();
+    if(diff <= 0) return;
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    document.getElementById('days').textContent  = String(d).padStart(2,'0');
+    document.getElementById('hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('mins').textContent  = String(m).padStart(2,'0');
+    document.getElementById('secs').textContent  = String(s).padStart(2,'0');
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Modal
+  function openModal(id) {
+    selectedProduct = products.find(p => p.id === id);
+    document.getElementById('modalProductInfo').innerHTML = `
+      <div class="prod-emo">${selectedProduct.emoji}</div>
+      <div class="prod-detail">
+        <div class="prod-name">${selectedProduct.name}</div>
+        <div class="prod-price">Rp ${selectedProduct.price.toLocaleString('id')}</div>
+      </div>`;
+    document.getElementById('qtySelect').value = '1';
+    updateModalTotal();
+    document.getElementById('modalOverlay').classList.add('active');
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+  }
+  function updateModalTotal() {
+    const qty = parseInt(document.getElementById('qtySelect').value);
+    const total = qty * selectedProduct.price;
+    document.getElementById('modalTotal').textContent = 'Rp ' + total.toLocaleString('id');
+  }
+  function confirmOrder() {
+    const qty = parseInt(document.getElementById('qtySelect').value);
+    const total = qty * selectedProduct.price;
+    const msg = encodeURIComponent(`Halo BunaKey! Saya ingin memesan:\n\n🛒 Produk: ${selectedProduct.emoji} ${selectedProduct.name}\n📦 Jumlah: ${qty} pcs\n🎟️ Kupon undian: ${qty} nomor\n💰 Total: Rp ${total.toLocaleString('id')}\n\nMohon konfirmasi pembayaran. Terima kasih!`);
+    window.open(`https://wa.me/6281143000000?text=${msg}`, '_blank');
+    closeModal();
+  }
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if(e.target === this) closeModal();
+  });
+</script>
+</body>
+</html>
